@@ -1,6 +1,0 @@
-@backend_service_system_of_LDUBGD_ASP_.Net_Web_APi_HostAddress = http://localhost:5232
-
-GET {{backend_service_system_of_LDUBGD_ASP_.Net_Web_APi_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
