@@ -4,7 +4,6 @@ services:
   postgres:
     image: postgres:15
     container_name: postgres-db
-    restart: always
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -13,6 +12,23 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+
+  statement-service:
+    build:
+      context: .
+      dockerfile: statement-service/Dockerfile
+    container_name: statement-service
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: service-system-of-LDUBGD_db
+      DB_USER: postgres
+      DB_PASS: postgres
+      ASPNETCORE_URLS: "http://+:5255"
+    depends_on:
+      - postgres
+    ports:
+      - "5255:5255"
 
 volumes:
   postgres_data:
