@@ -10,7 +10,7 @@ namespace Shared.Entities
         [Key]
         [ForeignKey("Statement")]
         [Column("id")]
-        public long Id { get; set; }  // Використовуємо той же Id, що в Statement (MapsId)
+        public long Id { get; set; }  
 
         [Column("is_ready")]
         public bool? IsReady { get; set; }
