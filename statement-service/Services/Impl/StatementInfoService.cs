@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.VisualBasic;
 using Shared.Entities;
 using statement_service.Data;
 using statement_service.DTOs;
@@ -34,34 +35,69 @@ namespace statement_service.Services.Impl
         }
 
 
-        public Task<List<StatementResponseDto>> FindStatementInfoByStatementFullNameAndStatusAsync(string fullName, StatementStatus status)
+        public async Task<List<StatementResponseDto>> FindStatementInfoByStatementFullNameAndStatusAsync(string fullName, StatementStatus status)
         {
-            throw new NotImplementedException();
+            var statements = await _statementInfoRepository.FindStatementDtoByFullNameAndStatus(fullName, status);
+            if (!statements.Any())
+            {
+                return new List<StatementResponseDto>();
+            }
+
+            return _mapper.Map<List<StatementResponseDto>>(statements);
         }
 
-        public Task<List<StatementResponseDto>> FindStatementInfoByStatementFullNameAsync(string fullName)
+        public async Task<List<StatementResponseDto>> FindStatementInfoByStatementFullNameAsync(string fullName)
         {
-            throw new NotImplementedException();
+            var statements = await _statementInfoRepository.FindStatementDtoByFullName(fullName);
+            if (!statements.Any())
+            {
+                return new List<StatementResponseDto>();
+            }
+
+            return _mapper.Map<List<StatementResponseDto>>(statements);
         }
 
-        public Task<List<StatementResponseDto>> GetStatementsInfoByStatusAndFacultyAsync(StatementStatus status, string faculty)
+        public async Task<List<StatementResponseDto>> GetStatementsInfoByStatusAndFacultyAsync(StatementStatus status, string faculty)
         {
-            throw new NotImplementedException();
+            var statements = await _statementInfoRepository.FindStatementInfoByStatusAndFacultyAsync(status, faculty);
+            if (!statements.Any())
+            {
+                return new List<StatementResponseDto>();
+            }
+
+            return _mapper.Map<List<StatementResponseDto>>(statements);
         }
 
-        public Task<List<StatementResponseDto>> GetStatementsInfoWithStatusPendingAsync()
+        public async Task<List<StatementResponseDto>> GetStatementsInfoWithStatusPendingAsync()
         {
-            throw new NotImplementedException();
+            var statements = await _statementInfoRepository.FindStatementsInfoWithStatusPendingAsync();
+            if (!statements.Any())
+            {
+                return new List<StatementResponseDto>();
+            }
+
+            return _mapper.Map<List<StatementResponseDto>>(statements);
         }
 
-        public Task<List<StatementResponseDto>> SearchByNameAsync(string name)
+        public async Task<List<StatementResponseDto>> SearchByNameAsync(string name)
         {
-            throw new NotImplementedException();
+            var statements = await _statementInfoRepository.FindStatementDtoByFullName(name);
+            if (!statements.Any())
+            {
+                return new List<StatementResponseDto>();
+            }
+
+            return _mapper.Map<List<StatementResponseDto>>(statements);
+        }
         }
 
-        public Task UpdateStatementStatusAsync(long statementId, StatementStatus status)
+        public async Task UpdateStatementStatusAsync(long statementId, StatementStatus status)
         {
-            throw new NotImplementedException();
+            var statement = await _statementInfoRepository.GetByIdAsync(statementId);
+            if (statement == null)
+            {
+                throw new ResourceNotFoundException("Statemnt not found");
+            }
+            await _statementInfoRepository.UpdateAsync(statementId, status);
         }
-    }
 }
